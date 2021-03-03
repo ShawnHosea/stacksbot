@@ -1,6 +1,9 @@
 @app
 init
 
+@static
+folder public
+
 @http
 get /
 
