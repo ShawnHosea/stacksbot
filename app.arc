@@ -4,6 +4,8 @@ init
 @static
 folder public
 
+@events
+
 @http
 get /
 

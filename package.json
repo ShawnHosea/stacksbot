@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "arc sandbox"
+    "start": "arc sandbox",
+    "styles": "npx cssmitten ./config.json > ./public/styles.css"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/ShawnHosea/stacksbot/issues"
   },
-  "homepage": "https://github.com/ShawnHosea/stacksbot#readme"
+  "homepage": "https://github.com/ShawnHosea/stacksbot#readme",
+  "dependencies": {
+    "@architect/functions": "^3.13.9",
+    "cssmitten": "^3.0.5",
+    "tiny-json-http": "^7.3.0"
+  }
 }
