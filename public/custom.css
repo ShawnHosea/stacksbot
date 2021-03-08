@@ -1,7 +1,23 @@
-.coinCard {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr ;
-    gap: 5rem;
-    align-items: center;
+body {
+padding: 2rem;
+}
+
+.wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.header {
+  max-width: 250px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
   justify-items: center;
+}
+
+.stxCard {
+   border-radius: 1rem;
+   border-style: solid;
+   padding: 1rem;
 }
