@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Transform": "AWS::Serverless-2016-10-31",
-  "Description": "Exported by architect/package@6.0.4 on 2021-03-05T05:36:37.950Z",
+  "Description": "Exported by architect/package@6.0.4 on 2021-03-09T05:43:58.711Z",
   "Resources": {
     "HTTP": {
       "Type": "AWS::Serverless::HttpApi",
@@ -67,12 +67,12 @@
             "ARC_CLOUDFORMATION": {
               "Ref": "AWS::StackName"
             },
-            "ARC_ENV": "production",
+            "ARC_ENV": "staging",
             "ARC_HTTP": "aws_proxy",
             "ARC_ROLE": {
               "Ref": "Role"
             },
-            "NODE_ENV": "production",
+            "NODE_ENV": "staging",
             "SESSION_TABLE_NAME": "jwe",
             "ARC_STATIC_BUCKET": {
               "Ref": "StaticBucket"
@@ -104,6 +104,82 @@
               }
             }
           }
+        }
+      }
+    },
+    "DailyScheduledLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "CodeUri": "/Users/HOSEATECH/Desktop/stacksbot/src/scheduled/daily",
+        "Runtime": "nodejs12.x",
+        "MemorySize": 1152,
+        "Timeout": 5,
+        "Environment": {
+          "Variables": {
+            "ARC_APP_NAME": "init",
+            "ARC_CLOUDFORMATION": {
+              "Ref": "AWS::StackName"
+            },
+            "ARC_ENV": "staging",
+            "ARC_HTTP": "aws_proxy",
+            "ARC_ROLE": {
+              "Ref": "Role"
+            },
+            "NODE_ENV": "staging",
+            "SESSION_TABLE_NAME": "jwe",
+            "ARC_STATIC_BUCKET": {
+              "Ref": "StaticBucket"
+            },
+            "TWITTER_ACCESS_TOKEN": "1367408277894660099-hUlBQx7qFegu45XCa5bUkvHnVbbUz2",
+            "TWITTER_ACCESS_TOKEN_SECRET": "QzqH5xy7KZz5m7DSSm3z2NKUMOteMVvzEa7WOS0Qrzbq9",
+            "TWITTER_API_KEY": "ZSHNOIx5Ha9RHn0SPdf1UklSN",
+            "TWITTER_API_SECRET": "xnuaIdOdaLJ5iRLS3mxwM8Xim969Ubco7xiFx1kR8dHqhBzCZd"
+          }
+        },
+        "Role": {
+          "Fn::Sub": [
+            "arn:aws:iam::${AWS::AccountId}:role/${roleName}",
+            {
+              "roleName": {
+                "Ref": "Role"
+              }
+            }
+          ]
+        },
+        "Events": {}
+      }
+    },
+    "DailyScheduledEvent": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "ScheduleExpression": "rate(1 day)",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "DailyScheduledLambda",
+                "Arn"
+              ]
+            },
+            "Id": "DailyScheduledLambda"
+          }
+        ]
+      }
+    },
+    "DailyScheduledPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "DailyScheduledLambda"
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "DailyScheduledEvent",
+            "Arn"
+          ]
         }
       }
     },
