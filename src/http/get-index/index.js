@@ -10,6 +10,9 @@ exports.handler = async function http (req) {
   let result = await tiny.get({url})
   let stx = result.body.data
 
+  let date = new Date().toDateString();
+  console.log(date)
+
 
   return {
     statusCode: 200,

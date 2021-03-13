@@ -16,7 +16,9 @@ exports.handler = async function scheduled (event) {
   // let result = await tiny.get({url})
   // let stx = result.body.data
   // console.log(stx)
- 
+  
+  let date = new Date().toDateString();
+  console.log(date)
 
   const status = await tiny.get({url})
   .then(response => {
@@ -24,7 +26,7 @@ exports.handler = async function scheduled (event) {
     let tweet
     if (stx) {
       //tweet the $STX price
-      tweet = 'Daily $STX price: ' + "\n" + "\n" + '$' + stx.priceUsd
+      tweet = 'Daily $STX price: ' + "\n" + "\n" + '$' + stx.priceUsd + "\n" + "\n" + date
     } 
     return tweet
   }).catch(err => {
